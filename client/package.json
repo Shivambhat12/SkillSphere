@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.24.1",
     "@tailwindcss/vite": "^4.0.12",
     "humanize-duration": "^3.32.1",
     "quill": "^2.0.3",
@@ -19,7 +20,6 @@
     "react-router-dom": "^7.3.0",
     "react-simple-star-rating": "^5.1.7",
     "react-youtube": "^10.1.0",
-    "tailwindcss": "^4.0.12",
     "uniqid": "^5.4.0"
   },
   "devDependencies": {
@@ -34,6 +34,7 @@
     "globals": "^15.15.0",
     "postcss": "^8.5.3",
     "tailwind": "^4.0.0",
+    "tailwindcss": "^4.0.13",
     "vite": "^6.2.0"
   }
 }
