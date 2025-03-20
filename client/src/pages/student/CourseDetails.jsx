@@ -4,9 +4,14 @@ import { AppContext } from "../../context/AppContext";
 import Loading from "../../components/students/Loading";
 import { assets } from "../../assets/assets";
 import humanizeDuration from "humanize-duration";
+import Footer from "../../components/students/Footer";
+import YouTube from "react-youtube";
 function CourseDetails() {
   const { id } = useParams();
   const [courseData, setCouseData] = useState(null);
+  const [openSections, setopenSections] = useState({});
+  const [isAlreadyEnrolled, setIsAlreadyEnrolled] = useState(false);
+  const [playerData, setPlayerData] = useState(false);
 
   const {
     allCourses,
@@ -14,6 +19,7 @@ function CourseDetails() {
     calculateChapterTime,
     calculateCourseDuration,
     calculateNoOfLectures,
+    currency,
   } = useContext(AppContext);
   const fetchCourseData = async () => {
     const findCourse = allCourses.find((course) => course._id === id);
@@ -21,7 +27,12 @@ function CourseDetails() {
   };
   useEffect(() => {
     fetchCourseData();
-  }, []);
+  }, [allCourses]);
+  //function to toggle the drop down menu
+  const toggleSection = (index) => {
+    setopenSections((prev) => ({ ...prev, [index]: !prev[index] }));
+  };
+
   return courseData ? (
     <>
       <div
@@ -78,9 +89,18 @@ function CourseDetails() {
                   key={index}
                   className="border border-gray-300 bg-white mb-2 rounded"
                 >
-                  <div className="flex items-center justify-between px-4 py-3 cursor-pointer select-none">
+                  <div
+                    className="flex items-center justify-between px-4 py-3 cursor-pointer select-none"
+                    onClick={() => toggleSection(index)}
+                  >
                     <div className="flex items-center gap-2">
-                      <img src={assets.down_arrow_icon} alt="arrow icon" />
+                      <img
+                        className={`transform transition-transform ${
+                          openSections[index] ? "rotate-180" : ""
+                        }`}
+                        src={assets.down_arrow_icon}
+                        alt="arrow icon"
+                      />
                       <p className="font-medium md:text-base text-sm">
                         {chapter.chapterTitle}
                       </p>
@@ -90,8 +110,12 @@ function CourseDetails() {
                       {calculateChapterTime(chapter)}
                     </p>
                   </div>
-
-                  <div className="overflow-hidden transition-all duration-300 max-h-96">
+                  {/* adding ternary operator to add the funcitonality of the drop down menu */}
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ${
+                      openSections[index] ? "max-h-96" : "max-h-0"
+                    }`}
+                  >
                     <ul className="list-disc md:pl-10 pl-4 pr-2 text-gray-600 border-t border-gray-300">
                       {chapter.chapterContent.map((lecture, i) => (
                         <li key={i} className="flex items-start gap-2 py-1">
@@ -104,7 +128,16 @@ function CourseDetails() {
                             <p>{lecture.lectureTitle}</p>
                             <div className="flex gap-2">
                               {lecture.isPreviewFree && (
-                                <p className="text-blue-500 cursor-pointer">
+                                <p
+                                  onClick={() =>
+                                    setPlayerData({
+                                      videoId: lecture.lectureUrl
+                                        .split("/")
+                                        .pop(),
+                                    })
+                                  }
+                                  className="text-blue-500 cursor-pointer"
+                                >
                                   Preview
                                 </p>
                               )}
@@ -124,10 +157,101 @@ function CourseDetails() {
               ))}
             </div>
           </div>
-        </div>
 
-        <div></div>
+          <div className="py-20 text-sm md:text-default">
+            <h3 className="text-xl font-semibold text-gray-800 ">
+              Course Description
+            </h3>
+            <p
+              className="pt-3 rich-text"
+              dangerouslySetInnerHTML={{
+                __html: courseData.courseDescription,
+              }}
+            ></p>
+          </div>
+        </div>
+        {/* from here the right section starts */}
+        <div className="max-w-course-424px z-10   shadow-lg rounded-t md:rounded-none overflow-hidden bd-white min-w-[300px] sm:min-w-[420]">
+          {playerData ? (
+            <YouTube
+              videoId={playerData.videoId}
+              opts={{
+                playerVars: {
+                  autoplay: 1,
+                },
+              }}
+              iframeClassName="w-full aspect-video"
+            />
+          ) : (
+            <img src={courseData.courseThumbnail} alt="course thumbnail" />
+          )}
+
+          <div className="p-5">
+            <div className="flex items-center gap-2">
+              <img
+                className="w-3.5"
+                src={assets.time_left_clock_icon}
+                alt="icon"
+              />
+
+              <p className="text-red-500">
+                <span className="font-medium">5 days</span> left at this price
+              </p>
+            </div>
+            <div className="flex gap-3 items-center pt-2">
+              <p className="text-gray-800 md:text-4xl text-2xl font-semibold">
+                {currency}
+                {(
+                  courseData.coursePrice -
+                  (courseData.discount * courseData.coursePrice) / 100
+                ).toFixed(2)}
+              </p>
+              {/* displaying the original cutted price */}
+              <p className="md:text-lg text-gray-500 line-through">
+                {currency}
+                {courseData.coursePrice}
+              </p>
+              <p className="md:text-lg text-gray-500">
+                {courseData.discount}%off
+              </p>
+            </div>
+            <div className="flex items-center text-sm md:text-default gap-4 pt-2 md:pt-4 text-gray-500">
+              <div className="flex items-center gap-1">
+                <img src={assets.star} alt="star icon" />
+                <p>{calculateRating(courseData)}</p>
+              </div>
+              {/* added a vetical line by adding a div with the with of pixel */}
+              <div className="h-4 w-px bg-gray-500/40"></div>
+              <div className="flex items-center gap-1">
+                <img src={assets.time_clock_icon} alt="clock icon" />
+                <p>{calculateCourseDuration(courseData)}</p>
+              </div>
+              {/* added a vetical line by adding a div with the with of pixel */}
+              <div className="h-4 w-px bg-gray-500/40"></div>
+              <div className="flex items-center gap-1">
+                <img src={assets.lesson_icon} alt="lesson icon" />
+                <p>{calculateNoOfLectures(courseData)}lessons</p>
+              </div>
+            </div>
+            <button className="md:mt-6 mt-4 w-full py-3 rounded bg-blue-600">
+              {isAlreadyEnrolled ? "Already Enrolled" : "Enroll Now"}
+            </button>
+            <div className="pt-6">
+              <p className="md:text-xl text-lg font-medium text-gray-800">
+                What's in the course?
+              </p>
+              <ul className="ml-4 pt-2 text-sm md:text-default list-disc text-gray-500">
+                <li>Lifetime acces with free updates.</li>
+                <li>step-by-step, hands-on project guidance.</li>
+                <li>Downloadable resources and source code.</li>
+                <li>Quizzes to test your knowledge.</li>
+                <li>Certificate of completion.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
+      <Footer />
     </>
   ) : (
     <Loading />
