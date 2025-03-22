@@ -12,6 +12,8 @@ import AddCourse from "./pages/educator/AddCourse.jsx";
 import MyCourses from "./pages/educator/MyCourses.jsx";
 import StudentsEnrolled from "./pages/educator/StudentsEnrolled.jsx";
 import Navbar from "./components/students/Navbar.jsx";
+// used in add course in the educator page when the educato is adding a course to style the rich text
+import "quill/dist/quill.snow.css";
 
 function App() {
   console.log("ffffffffff");
