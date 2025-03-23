@@ -8,6 +8,7 @@ import "dotenv/config";
 
 // getting the connectdb function from the config folder
 import connectDB from "./configs/mongodb.js";
+import clerkWebhooks from "./controllers/webhooks.js";
 
 // creating the instance app of the express
 const app = express();
@@ -21,8 +22,10 @@ app.use(cors());
 // server will be listening on this port
 const PORT = process.env.PORT || 5000;
 
+// routes
 app.get("/", (req, res) => {
   res.send("hi from server");
 });
+app.post("/clerk", express.json(), clerkWebhooks);
 
 app.listen(PORT, () => console.log(`Server started at port ${PORT}`));
