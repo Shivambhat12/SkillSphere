@@ -86,6 +86,7 @@ export const sripeWebhooks = async (request, response) => {
 
       userData.enrolledCourses.push(courseData._id);
       await userData.save();
+      console.log("yha tk aya h succed m");
 
       purchaseData.status = "complete";
 
