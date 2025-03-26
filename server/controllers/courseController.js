@@ -1,4 +1,4 @@
-import Course from "../models/course.js";
+import Course from "../models/Course.js";
 
 // get all courses
 
