@@ -14,6 +14,7 @@ import { clerkMiddleware } from "@clerk/express";
 import connectCloudinary from "./configs/coudinary.js";
 import courseRouter from "./routes/courseRoutes.js";
 import userRouter from "./routes/userRoutes.js";
+import sripeWebhooks from "./controllers/webhooks.js";
 
 // creating the instance app of the express
 const app = express();
@@ -39,5 +40,6 @@ app.post("/clerk", express.json(), clerkWebhooks);
 app.use("/api/educator", express.json(), educatorRouter);
 app.use("/api/course", express.json(), courseRouter);
 app.use("/api/user", express.json(), userRouter);
+app.post("/stripe", express.raw({ type: "application/json" }), sripeWebhooks);
 
 app.listen(PORT, () => console.log(`Server started at port ${PORT}`));
