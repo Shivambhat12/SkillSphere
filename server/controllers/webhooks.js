@@ -51,7 +51,7 @@ const clerkWebhooks = async (req, res) => {
 
 const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-export const sripeWebhooks = async (request, response) => {
+export const stripeWebhooks = async (request, response) => {
   const sig = request.headers[`stripe-signature`];
   let event;
   try {
@@ -61,7 +61,7 @@ export const sripeWebhooks = async (request, response) => {
       process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (error) {
-    response.status(400).send(`Webhook Error:${error.message}`);
+    return response.status(400).send(`Webhook Error:${error.message}`);
   }
 
   // handling the event
