@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-export const PurchaseSchema = new mongoose.Schema(
+const PurchaseSchema = new mongoose.Schema(
   {
     courseId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -25,4 +25,4 @@ export const PurchaseSchema = new mongoose.Schema(
 );
 
 const Purchase = mongoose.model("Purchase", PurchaseSchema);
-// module
+export default Purchase;
