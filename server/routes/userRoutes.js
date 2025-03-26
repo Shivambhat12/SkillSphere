@@ -3,7 +3,7 @@ import {
   getUserData,
   purchaseCourse,
   userEnrolledCourses,
-} from "../controllers/usercontroller.js";
+} from "../controllers/userController.js";
 
 const userRouter = express.Router();
 
