@@ -6,6 +6,8 @@ import { assets } from "../../assets/assets";
 import humanizeDuration from "humanize-duration";
 import Footer from "../../components/students/Footer";
 import YouTube from "react-youtube";
+import axios from "axios";
+import { toast } from "react-toastify";
 function CourseDetails() {
   const { id } = useParams();
   const [courseData, setCouseData] = useState(null);
@@ -20,14 +22,60 @@ function CourseDetails() {
     calculateCourseDuration,
     calculateNoOfLectures,
     currency,
+    backendurl,
+    userData,
+    getToken,
   } = useContext(AppContext);
   const fetchCourseData = async () => {
-    const findCourse = allCourses.find((course) => course._id === id);
-    setCouseData(findCourse);
+    try {
+      const { data } = await axios.get(backendurl + "/api/course/" + id);
+      if (data.success) {
+        setCouseData(data.courseData);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
+  const enrollCourse = async () => {
+    try {
+      if (!userData) {
+        return toast.warn("Login to Enroll");
+      }
+      if (isAlreadyEnrolled) {
+        return toast.warn("Already Enrolled");
+      }
+      const token = await getToken();
+      const { data } = await axios.post(
+        backendurl + "/api/user/purchase",
+        {
+          courseId: courseData._id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (data.success) {
+        const { session_url } = data;
+        window.location.replace(session_url);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {}
+  };
+
   useEffect(() => {
     fetchCourseData();
-  }, [allCourses]);
+  }, []);
+  useEffect(() => {
+    if (userData && courseData) {
+      setIsAlreadyEnrolled(userData.enrolledCourses.includes(courseData._id));
+    }
+  }, [userData, courseData]);
   //function to toggle the drop down menu
   const toggleSection = (index) => {
     setopenSections((prev) => ({ ...prev, [index]: !prev[index] }));
@@ -70,21 +118,25 @@ function CourseDetails() {
               ))}
             </div>
             <p className="text-gray-500">
-              ({courseData.courseRatings.length}
-              {courseData.courseRatings.length > 1 ? "ratings" : "rating"})
+              ({courseData.courseRating.length}
+              {courseData.courseRating.length > 1 ? "ratings" : "rating"})
             </p>
             <p className="text-blue-600">
-              ({courseData.enrolledStudents.length}
-              {courseData.enrolledStudents.length > 1 ? "students" : "student"})
+              ({courseData.enrolledStudents?.length}
+              {courseData.enrolledStudents?.length > 1 ? "students" : "student"}
+              )
             </p>
           </div>
           <p className="text-sm">
-            Course By <span className="text-blue-600 underline">shivam</span>
+            Course By{" "}
+            <span className="text-blue-600 underline">
+              {courseData.educator.name}
+            </span>
           </p>
           <div className="pt-8 text-gray-800">
             <h2 className="text-xl  font-semibold">Course Structure</h2>
             <div className="pt-5">
-              {courseData.courseContent.map((chapter, index) => (
+              {courseData?.courseContent?.map((chapter, index) => (
                 <div
                   key={index}
                   className="border border-gray-300 bg-white mb-2 rounded"
@@ -106,7 +158,7 @@ function CourseDetails() {
                       </p>
                     </div>
                     <p className="text-sm md:text-default">
-                      {chapter.chapterContent.lenght} lectures -{" "}
+                      {chapter.chapterContent.length} lectures -{" "}
                       {calculateChapterTime(chapter)}
                     </p>
                   </div>
@@ -233,7 +285,10 @@ function CourseDetails() {
                 <p>{calculateNoOfLectures(courseData)}lessons</p>
               </div>
             </div>
-            <button className="md:mt-6 mt-4 w-full py-3 rounded bg-blue-600">
+            <button
+              onClick={enrollCourse}
+              className="md:mt-6 mt-4 w-full py-3 rounded bg-blue-600"
+            >
               {isAlreadyEnrolled ? "Already Enrolled" : "Enroll Now"}
             </button>
             <div className="pt-6">

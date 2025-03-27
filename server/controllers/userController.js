@@ -23,7 +23,11 @@ export const userEnrolledCourses = async (req, res) => {
   try {
     const userId = req.auth.userId;
     const userData = await User.findById(userId).populate("enrolledCourses");
+    if (!userData) {
+      return req.json({ success: false, message: "user not found" });
+    }
     res.json({ success: true, enrolledCourses: userData.enrolledCourses });
+    console.log("shivam");
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
@@ -92,7 +96,7 @@ export const updateUserCourseProgress = async (req, res) => {
   try {
     const userId = req.auth.userId;
     const { courseId, lectureId } = req.body;
-    const progressData = await updateUserCourseProgress.findOne({
+    const progressData = await CourseProgress.findOne({
       userId,
       courseId,
     });

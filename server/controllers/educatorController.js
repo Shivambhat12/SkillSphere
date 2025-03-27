@@ -1,6 +1,8 @@
 // importing clerkclient object that offers many operations like fetching users and interact with clerk API
 import { clerkClient } from "@clerk/express";
 import Course from "../models/Course.js";
+import Purchase from "../models/Purchase.js"; // Ensure this model exists
+import User from "../models/user.js"; // Ensure this model exists
 
 import { v2 as cloudinary } from "cloudinary";
 

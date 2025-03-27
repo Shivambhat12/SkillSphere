@@ -14,6 +14,7 @@ import StudentsEnrolled from "./pages/educator/StudentsEnrolled.jsx";
 import Navbar from "./components/students/Navbar.jsx";
 // used in add course in the educator page when the educato is adding a course to style the rich text
 import "quill/dist/quill.snow.css";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   console.log("ffffffffff");
@@ -21,6 +22,7 @@ function App() {
 
   return (
     <div className="text-default min-h-screen bg-white">
+      <ToastContainer />
       {!isEducatorRoute && <Navbar />}
 
       <Routes>

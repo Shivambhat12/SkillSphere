@@ -55,7 +55,7 @@ function CourseCard({ course }) {
             ))}
           </div>
           <span className="text-sm text-gray-500">
-            ({course.courseRatings.length})
+            ({course.courseRating.length})
           </span>
         </div>
 
