@@ -1,20 +1,34 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import Loading from "../../components/students/Loading";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function MyCourses() {
   // as this page needs the data of the courses to be diaplayed so we will get it form the context
-  const { currency, allCourses } = useContext(AppContext);
+  const { currency, backendurl, getToken, isEducator } = useContext(AppContext);
   // using use state hook to change the data of courses
   const [courses, setCourses] = useState(null);
   // function to set the courses
   const fetchEducatorCourses = async () => {
-    setCourses(allCourses);
+    try {
+      const token = await getToken();
+      const { data } = await axios.get(backendurl + "/api/educator/courses", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      data.success && setCourses(data.courses);
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
   //  using useEffect hook to run the function as soon as the page is loaded
   useEffect(() => {
-    fetchEducatorCourses();
-  }, [allCourses]);
+    if (isEducator) {
+      fetchEducatorCourses();
+    }
+  }, [isEducator]);
 
   // when we have the data of courses than we will render it otherwise we will render the loading component
   return courses ? (
