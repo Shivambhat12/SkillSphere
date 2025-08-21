@@ -94,8 +94,8 @@ export const assets = {
 
 export const dummyEducatorData = {
   _id: "675ac1512100b91a6d9b8b24",
-  name: "GreatStack",
-  email: "user.greatstack@gmail.com",
+  name: "Shivam Bhatnagar",
+  email: "user.shivambhatnagar321@gmail.com",
   imageUrl:
     "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yclFkaDBOMmFqWnBoTTRBOXZUanZxVlo0aXYifQ",
   createdAt: "2024-12-12T10:56:17.930Z",
@@ -105,28 +105,28 @@ export const dummyEducatorData = {
 
 export const dummyTestimonial = [
   {
-    name: "Donald Jackman",
-    role: "SWE 1 @ Amazon",
+    name: "Arya Chauchan",
+    role: "MNNIT final year Btech ",
     image: assets.profile_img_1,
     rating: 5,
     feedback:
-      "I've been using Imagify for nearly two years, primarily for Instagram, and it has been incredibly user-friendly, making my work much easier.",
+      "SkillSphere made learning so easy and fun! I used to struggle with staying consistent, but the hands-on approach kept me engaged. I recently finished the Web Development track and even built my own project – something I never thought I could do this early.",
   },
   {
-    name: "Richard Nelson",
-    role: "SWE 2 @ Samsung",
+    name: "Amit Kumar",
+    role: "MNNIT final Year MCA",
     image: assets.profile_img_2,
     rating: 4,
     feedback:
-      "I've been using Imagify for nearly two years, primarily for Instagram, and it has been incredibly user-friendly, making my work much easier.",
+      "I was looking to upskill while working full-time, and SkillSphere was exactly what I needed. The courses are practical, well-structured, and I could learn at my own pace. Within three months, I was confident enough to switch to a new role in my company.",
   },
   {
-    name: "James Washington",
-    role: "SWE 2 @ Google",
+    name: "Ajay Yadav",
+    role: "MNNIT pre-final year MCA",
     image: assets.profile_img_3,
     rating: 4.5,
     feedback:
-      "I've been using Imagify for nearly two years, primarily for Instagram, and it has been incredibly user-friendly, making my work much easier.",
+      "Coming from a non-technical background, I was intimidated by coding. But SkillSphere broke everything down into simple steps. The projects and certifications gave me the confidence to apply for internships. I’m finally on my way to a career I love.",
   },
 ];
 

@@ -12,9 +12,14 @@ import AddCourse from "./pages/educator/AddCourse.jsx";
 import MyCourses from "./pages/educator/MyCourses.jsx";
 import StudentsEnrolled from "./pages/educator/StudentsEnrolled.jsx";
 import Navbar from "./components/students/Navbar.jsx";
+import QuizDetailsPage from "./pages/student/QuizDetailsPage.jsx";
+import QuizListPage from "./pages/student/QuizListPage.jsx";
+import QuizStartPage from "./pages/student/QuizStartPage.jsx";
 // used in add course in the educator page when the educato is adding a course to style the rich text
 import "quill/dist/quill.snow.css";
 import { ToastContainer } from "react-toastify";
+import About from "./pages/student/About.jsx";
+import ContactUs from "./pages/student/ContactUs.jsx";
 
 function App() {
   console.log("ffffffffff");
@@ -27,6 +32,8 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about-us" element={<About />} />
+        <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/course-list" element={<CourseList />} />
         <Route path="/course-list/:input" element={<CourseList />} />
         <Route path="/course/:id" element={<CourseDetails />} />
@@ -39,6 +46,9 @@ function App() {
           <Route path="my-courses" element={<MyCourses />} />
           <Route path="student-enrolled" element={<StudentsEnrolled />} />
         </Route>
+        <Route path="/quizzes" element={<QuizListPage />} />
+        <Route path="/quiz/:id" element={<QuizDetailsPage />} />
+        <Route path="/quiz/:id/start" element={<QuizStartPage />} />
       </Routes>
     </div>
   );

@@ -12,13 +12,16 @@ function Footer() {
         </p>
       </div>
       <div className="flex items-center gap-3 max-md:mt-4">
-        <a href="#">
+        <a
+          href="https://www.facebook.com/shivam.bhatnagar.716195"
+          target="blank"
+        >
           <img src={assets.facebook_icon} alt="facebook" />
         </a>
-        <a href="#">
+        <a href="https://x.com/" target="blank">
           <img src={assets.twitter_icon} alt="facebook" />
         </a>
-        <a href="#">
+        <a href="https://www.instagram.com/" target="blank">
           <img src={assets.instagram_icon} alt="facebook" />
         </a>
       </div>

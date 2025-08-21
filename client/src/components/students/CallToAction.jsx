@@ -1,5 +1,6 @@
 import React from "react";
 import { assets } from "../../assets/assets";
+import { Link } from "react-router-dom";
 
 function CallToAction() {
   return (
@@ -8,13 +9,16 @@ function CallToAction() {
         Learn anything, anytime, anywhere
       </h1>
       <p className="text-gray-500 sm:text-sm">
-        mera nam h shivam bhatnagar or mai ye project bna rha hu bhaisaahb esi
-        tesi lgo huo thi subh s itti error a rhi h
+        Unlock your potential today—join SkillSphere and turn learning into
+        limitless opportunities.
       </p>
       <div className="flex items-center font-medium gap-6 mt-4">
-        <button className="px-10 py-3 rounded-md text-white bg-blue-600">
-          Get started
-        </button>
+        <Link to={"/course-list"} onClick={() => scrollTo(0, 0)}>
+          <button className="px-10 py-3 rounded-md text-white bg-blue-600">
+            Get started
+          </button>
+        </Link>
+
         <button className="flex-items-center gap-2">
           Learn More <img src={assets.arrow_icon} alt="arrow"></img>
         </button>

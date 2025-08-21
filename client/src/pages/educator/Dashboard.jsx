@@ -21,7 +21,7 @@ function Dashboard() {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(data.error);
+      toast.error(error.message);
     }
   };
 
@@ -29,70 +29,89 @@ function Dashboard() {
     if (isEducator) {
       fetchDashboardData();
     }
-  }, []);
+  }, [isEducator]);
+
   return dashboardData ? (
-    <div className="min-h-screen flex flex-col items-start justify-between gap-8 md:p-8 md:pb-0 p-4 pt-8 pb-0">
-      <div className="space-y-5">
-        <div className="flex flex-wrap gap-5 items-center">
-          <div className="flex items-center gap-3 shadow-card border border-blue-500 p-4 w-56 rounded-md">
-            <img src={assets.patients_icon} alt="patients" />
+    <div className="min-h-screen flex flex-col items-start justify-between gap-8 md:p-8 p-4 pt-8 pb-0">
+      <div className="space-y-8 w-full">
+        {/* Total Stats Cards */}
+        <div className="flex flex-wrap gap-5 items-center justify-between">
+          <div className="flex items-center gap-3 shadow-xl hover:shadow-2xl border border-blue-500 p-4 w-56 rounded-md transition-all duration-300 ease-in-out">
+            <img
+              src={assets.patients_icon}
+              alt="patients"
+              className="w-12 h-12"
+            />
             <div>
-              <p className="text-2xl font-medium text-gray-600">
+              <p className="text-3xl font-semibold text-gray-800">
                 {dashboardData.enrolledStudentsData.length}
               </p>
-              <p className="text-base text-gray-500">Total Enrolments</p>
+              <p className="text-sm text-gray-500">Total Enrolments</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 shadow-card border border-blue-500 p-4 w-56 rounded-md">
-            <img src={assets.appointments_icon} alt="patients" />
+          <div className="flex items-center gap-3 shadow-xl hover:shadow-2xl border border-blue-500 p-4 w-56 rounded-md transition-all duration-300 ease-in-out">
+            <img
+              src={assets.appointments_icon}
+              alt="appointments"
+              className="w-12 h-12"
+            />
             <div>
-              <p className="text-2xl font-medium text-gray-600">
+              <p className="text-3xl font-semibold text-gray-800">
                 {dashboardData.totalCourses}
               </p>
-              <p className="text-base text-gray-500">Total Courses</p>
+              <p className="text-sm text-gray-500">Total Courses</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 shadow-card border border-blue-500 p-4 w-56 rounded-md">
-            <img src={assets.earning_icon} alt="patients" />
+          <div className="flex items-center gap-3 shadow-xl hover:shadow-2xl border border-blue-500 p-4 w-56 rounded-md transition-all duration-300 ease-in-out">
+            <img
+              src={assets.earning_icon}
+              alt="earnings"
+              className="w-12 h-12"
+            />
             <div>
-              <p className="text-2xl font-medium text-gray-600">
+              <p className="text-3xl font-semibold text-gray-800">
                 {currency}
                 {dashboardData.totalEarnings}
               </p>
-              <p className="text-base text-gray-500">Total Earnings</p>
+              <p className="text-sm text-gray-500">Total Earnings</p>
             </div>
           </div>
         </div>
+
+        {/* Latest Enrollments Section */}
         <div>
-          <h2 className="pb-4 text-lg font-medium">Latest Enrollments</h2>
-          <div className="flex flex-col items-center max-w-4xl w-full overflow-hidden rounded-md bg-white border border-gray-500/20">
-            <table className="table-fixed md:table-auto w-full overflow-hidden">
-              <thead className="text-gray-900 border-b border-gray-500/20 text-sm text-left">
+          <h2 className="pb-4 text-2xl font-semibold text-gray-800">
+            Latest Enrollments
+          </h2>
+          <div className="overflow-x-auto bg-white shadow-lg rounded-md">
+            <table className="min-w-full table-auto">
+              <thead className="text-gray-800 border-b bg-gray-100">
                 <tr>
-                  <th className="px-4 py-3 font-semibold text-center hidden sm:table-cell">
-                    #
-                  </th>
-                  <th className="px-4 py-3 font-semibold">Student Name</th>
-                  <th className="px-4 py-3 font-semibold">Course Title</th>
+                  <th className="px-6 py-4 font-semibold text-center">#</th>
+                  <th className="px-6 py-4 font-semibold">Student Name</th>
+                  <th className="px-6 py-4 font-semibold">Course Title</th>
                 </tr>
               </thead>
-              <tbody className="text-sm text-gray-500">
+              <tbody className="text-gray-600">
                 {dashboardData.enrolledStudentsData.map((item, index) => (
-                  <tr key={index} className="border-b border-gray-500/20">
-                    <td className="px-4 py-3 text-center hidden sm:table-cell">
-                      {index + 1}{" "}
-                    </td>
-                    <td className="md:px-4 px-3 py-3 flex items-center space-x-3">
+                  <tr
+                    key={index}
+                    className={`border-b hover:bg-gray-50 ${
+                      index % 2 === 0 ? "bg-gray-50" : ""
+                    }`}
+                  >
+                    <td className="px-6 py-4 text-center">{index + 1}</td>
+                    <td className="px-6 py-4 flex items-center gap-3">
                       <img
                         src={item.student.imageUrl}
                         alt="Profile"
-                        className="w-9 h-9 rounded-full"
+                        className="w-10 h-10 rounded-full"
                       />
                       <span className="truncate">{item.student.name}</span>
                     </td>
-                    <td className="px-4 py-3 truncate">{item.courseTile}</td>
+                    <td className="px-6 py-4 truncate">{item.courseTile}</td>
                   </tr>
                 ))}
               </tbody>
