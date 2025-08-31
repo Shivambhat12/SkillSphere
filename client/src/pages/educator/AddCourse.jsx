@@ -191,7 +191,7 @@ function AddCourse() {
 
           <div className="flex md:flex-row flex-col items-center gap-3">
             <p className="font-semibold">Course Thumbnail</p>
-            <label htmlFor="thumbnail" className="flex items-center gap-3">
+            <label htmlFor="thumbnailImage" className="flex items-center gap-3">
               <img
                 src={assets.file_upload_icon}
                 alt="Upload"
