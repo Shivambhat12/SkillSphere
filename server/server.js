@@ -14,7 +14,7 @@ import { clerkMiddleware } from "@clerk/express";
 import connectCloudinary from "./configs/coudinary.js";
 import courseRouter from "./routes/courseRoutes.js";
 import userRouter from "./routes/userRoutes.js";
-import stripeWebhooks from "./controllers/webhooks.js";
+import { stripeWebhooks } from "./controllers/webhooks.js";
 
 // creating the instance app of the express
 const app = express();

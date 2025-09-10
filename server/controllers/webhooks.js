@@ -6,6 +6,7 @@ import Course from "../models/Course.js";
 
 const clerkWebhooks = async (req, res) => {
   try {
+    console.log("clerk webhook hit");
     const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
     await whook.verify(JSON.stringify(req.body), {
       "svix-id": req.headers["svix-id"],
@@ -53,10 +54,12 @@ const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const stripeWebhooks = async (request, response) => {
   const sig = request.headers[`stripe-signature`];
+  // const sig = "whsec_test_dummy_value";
   let event;
+  console.log("came here");
   try {
     // may have error
-    event = stripeInstance.webhooks.constructEvent(
+    event = Stripe.webhooks.constructEvent(
       request.body,
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
@@ -78,16 +81,18 @@ export const stripeWebhooks = async (request, response) => {
       const purchaseData = await Purchase.findById(purchaseId);
 
       const userData = await User.findById(purchaseData.userId);
-      const courseData = await Course.findById(purchaseData.courseId);
-
-      courseData.enrolledStudents.push(userData);
+      const courseData = await Course.findById(
+        purchaseData.courseId.toString()
+      );
+      // this line can have error have to check
+      courseData.enrolledStudents.push(userData._id);
       await courseData.save();
 
       userData.enrolledCourses.push(courseData._id);
       await userData.save();
       console.log("yha tk aya h succed m");
 
-      purchaseData.status = "complete";
+      purchaseData.status = "completed";
 
       await purchaseData.save();
 
@@ -111,9 +116,8 @@ export const stripeWebhooks = async (request, response) => {
     // handling other types of events
     default:
       console.log(`unhandled event type ${event.type}`);
-
-      response.json({ received: true });
   }
+  response.json({ received: true });
 };
 
 export default clerkWebhooks;
