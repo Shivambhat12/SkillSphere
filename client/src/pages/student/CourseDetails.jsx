@@ -35,6 +35,7 @@ function CourseDetails() {
       } else {
         toast.error(data.message);
       }
+      // console.log(data.courseData);
     } catch (error) {
       toast.error("Failed to load course details.");
     }
@@ -60,6 +61,27 @@ function CourseDetails() {
       toast.error("Enrollment failed");
     }
   };
+  function getYouTubeId(url) {
+    try {
+      const parsed = new URL(url);
+
+      if (parsed.searchParams.get("v")) {
+        return parsed.searchParams.get("v");
+      }
+
+      if (parsed.hostname.includes("youtu.be")) {
+        return parsed.pathname.slice(1); // remove leading '/'
+      }
+
+      if (parsed.pathname.startsWith("/shorts/")) {
+        return parsed.pathname.split("/")[2]; // after /shorts/
+      }
+
+      return null;
+    } catch {
+      return null;
+    }
+  }
 
   useEffect(() => {
     fetchCourseData();
@@ -75,6 +97,8 @@ function CourseDetails() {
     setOpenSections((prev) => ({ ...prev, [index]: !prev[index] }));
   };
 
+  // console.log(courseData.courseContent[0]);
+  // console.log(courseData);
   return courseData ? (
     <>
       <div className="relative md:px-36 px-6 pt-20 pb-10 bg-gray-50 text-gray-800">
@@ -179,13 +203,12 @@ function CourseDetails() {
                             {lecture.isPreviewFree && (
                               <span
                                 className="text-blue-600 cursor-pointer"
-                                onClick={() =>
+                                onClick={() => {
+                                  console.log(lecture.lectureUrl);
                                   setPlayerData({
-                                    videoId: lecture.lectureUrl
-                                      .split("/")
-                                      .pop(),
-                                  })
-                                }
+                                    videoId: getYouTubeId(lecture.lectureUrl),
+                                  });
+                                }}
                               >
                                 Preview
                               </span>
