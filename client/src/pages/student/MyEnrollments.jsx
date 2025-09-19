@@ -24,12 +24,14 @@ function MyEnrollments() {
       const token = await getToken();
       const tempProgressArray = await Promise.all(
         enrolledCourses.map(async (course) => {
-          const { data } = await axios.post(
+          const { data } = await axios.get(
             `${backendurl}/api/user/get-course-progress`,
-            { courseId: course._id },
-            { headers: { Authorization: `Bearer ${token}` } }
+            {
+              params: { courseId: course._id },
+              headers: { Authorization: `Bearer ${token}` },
+            }
           );
-
+          console.log(data);
           const totalLectures = calculateNoOfLecture(course);
           const lectureCompleted = data.progressData
             ? data.progressData.lectureCompleted.length
